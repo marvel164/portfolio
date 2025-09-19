@@ -29,7 +29,7 @@ const Navbar = () => {
         <Image src={assets.header_bg_color} alt="" className="hidden w-full" />
       </div>
       <nav
-        className={`w-full h-[15%] lg:h-[15%] fixed px-5 lg:px-8 xl:px-[8%] flex items-center justify-between z-50 bg-[#11001f]/90 ${
+        className={`w-full h-[10%] lg:h-[10%] fixed px-5 lg:px-8 xl:px-[8%] flex items-center justify-between z-50 bg-[#11001f]/90 ${
           isScroll ? "bg-[#11001f]/50 backdrop-blur-lg shadow-sm" : ""
         }`}
       >

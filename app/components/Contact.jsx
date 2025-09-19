@@ -1,16 +1,41 @@
 import { assets } from "@/assets/assets";
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
 import { motion } from "motion/react";
 
 const Contact = () => {
+  const [result, setResult] = useState("");
+
+  const onSubmit = async (event) => {
+    event.preventDefault();
+    setResult("Sending....");
+    const formData = new FormData(event.target);
+
+    formData.append("access_key", "0e3601cf-504b-4bb1-a350-59512a3c9b6f");
+
+    const response = await fetch("https://api.web3forms.com/submit", {
+      method: "POST",
+      body: formData,
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+      setResult("Form Submitted Successfully");
+      event.target.reset();
+    } else {
+      console.log("Error", data);
+      setResult(data.message);
+    }
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
       transition={{ duration: 1 }}
       id="contact"
-      className="w-full px-[12%] py-10 scroll-mt-2 bg-no-repeat bg-center bg-[length:90%_auto]"
+      className="w-full px-[12%] py-10 scroll-mt-5 bg-no-repeat bg-center bg-[length:90%_auto]"
     >
       <motion.h4
         initial={{ opacity: 0, y: -20 }}
@@ -40,6 +65,7 @@ const Contact = () => {
       </motion.p>
 
       <motion.form
+        onSubmit={onSubmit}
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         transition={{ duration: 0.5, delay: 0.9 }}
@@ -54,6 +80,7 @@ const Contact = () => {
             placeholder="Enter your name"
             required
             className="flex-1 p-3 outline-none border-[0.5px] border-gray-400 rounded-md bg-[#11001f]"
+            name="name"
           />
           <motion.input
             initial={{ opacity: 0, x: -50 }}
@@ -63,6 +90,7 @@ const Contact = () => {
             placeholder="Enter your email"
             required
             className="flex-1 p-3 outline-none border-[0.5px] border-gray-400 rounded-md bg-[#11001f]"
+            name="email"
           />
         </div>
         <motion.textarea
@@ -73,6 +101,7 @@ const Contact = () => {
           placeholder="Enter your message"
           required
           className="w-full p-4 outline-none border-[0.5px] border-gray-400 rounded-md bg-[#11001f] mb-6"
+          name="message"
         ></motion.textarea>
 
         <motion.button
@@ -84,6 +113,8 @@ const Contact = () => {
           Submit now{" "}
           <Image src={assets.right_arrow_white} alt="" className="w-4" />
         </motion.button>
+
+        <p className="mt-4">{result}</p>
       </motion.form>
     </motion.div>
   );
